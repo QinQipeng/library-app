@@ -1,0 +1,197 @@
+h1, h2, h3, body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    background-color:darksalmon;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.black-overlay {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.book {
+    height: min(40vh, 600px);
+    width: min(30vh, 300px);
+    display: flex;
+    flex-direction: column;
+    margin: 2% 0 0 2%;
+}
+
+.book .cover {
+    position: relative;
+    height: 90%;
+    background-color: hsl(13, 58%, 34%);
+    border-radius: 5px 5px 5px 0;
+    border-bottom: 7.5px solid hsl(13, 59%, 26%);
+    text-align: center;
+    outline: 1px dashed rgba(54, 4, 4, 0.47);
+    outline-offset: -20px;
+    padding: 2% 0;
+}
+
+.cover h1 {
+    display: flex;
+    margin-top: 15%;
+    inline-size: 75%;
+    height: 6rem;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    font-family: "UnifrakturMaguntia", "cursive";
+    font-size: 2.5rem;
+    color: gold;
+    text-shadow: 0px 0px 5px goldenrod;
+}
+
+.cover h2,
+.cover h3 {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.book .cover::before{
+    position: absolute;
+    height: calc(100% - 7.5px);
+    content: "";
+    border-left: 2px dashed hsl(352, 95%, 52%);
+    left: 7.5px;
+    /* box-shadow: 4px 0 3px 4px hsla(0, 45%, 24%, 0.5); */
+}
+
+.book .beneath {
+    position: relative;
+    height: 10%;
+    background-color: hsl(0, 0%, 100%);
+    background-image: repeating-linear-gradient(
+        to bottom, 
+        transparent 0px 4px, 
+        #cccccc8c 4px 5px);     /* The horizonal line texture of the pages */
+    border-left: 7.5px solid hsl(13, 59%, 26%);
+    border-bottom: 7.5px solid hsl(13, 59%, 26%);
+    border-radius: 0 5px 5px 5px;
+    box-shadow: 0 0 10px 2px inset hsla(0, 0%, 50%, 0.795);
+}
+
+.book .beneath::before {      /* The inverted corner */
+    content: "";
+    position: absolute;
+    background-color: darksalmon;
+    height: 100%;
+    width: 10px;
+    right: 0;
+    border-radius: 5px 0% 0% 5px;
+}
+
+.add-book {
+    display: flex;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+
+    height: 5rem;
+    width: 5rem;
+    border-radius: 100%;
+    border: 0;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background-color: hsl(13, 55%, 44%);
+    cursor: pointer;
+    box-shadow: 0 8px hsl(13, 59%, 26%);
+}
+
+.add-book:active {
+    transform: translateY(3px);
+    box-shadow: 0 5px hsl(13, 59%, 26%);
+}
+
+.add-book svg {
+    height: 60%;
+    fill: hsl(13, 59%, 26%);
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.close-button {
+    right: 10%;
+    top: 5%;
+    height: 2rem;
+    width: 2rem;
+    border: 1px solid black;
+    border-radius: 100%;
+    align-self: flex-end;
+}
+
+.save-button {
+    height: 2.5rem;
+    border-radius: 0.5rem;
+}
+
+.form-container {
+    --scale: 2;
+    width: calc(292px*var(--scale));
+    height: calc(360px*var(--scale));
+    position: fixed;
+    justify-self: center;
+    top: 50%;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+
+    background: no-repeat url(book-template.png);
+    background-size: contain;
+    z-index: 2;
+
+    padding: 50px 75px 75px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container form,
+.form-row{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.form-row {
+    justify-content: flex-start;
+}
+
+.form-row:last-child {
+    flex: 3;
+}
+
+.form-row > input,
+.form-row > textarea {
+    height: inherit;
+    border-radius: 0.5rem;
+    border: 1px solid black;
+}
+
+.form-row > input{
+    max-height: 1.5rem;
+}
+
+.form-row > textarea{
+    resize: none;
+}
+
