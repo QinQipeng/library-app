@@ -14,39 +14,59 @@
 
 <body>
     <div class="form-container">
-        <button class="close-button">❌</button>
-        <form action="post" class="book-form">
+        <div class="button-row">
+            <button class="edit-button">🖋️</button>
+            <button class="close-button">❌</button>
+        </div>
+
+        <form action="" class="book-form">
             <div class="form-row">
                 <label for="title">Title</label>
-                <input type="text" name="title" id="title">
+                <input type="text" name="title" id="title" required>
             </div>
             <div class="form-row">
                 <label for="author">Author</label>
-                <input type="text" name="author" id="author">
+                <input type="text" name="author" id="author" required>
             </div>
             <div class="form-row">
                 <label for="year">Year</label>
-                <input type="number" name="year" id="year" min="0" max="2026">
+                <input type="number" name="year" id="year" min="0" max="2026" required>
             </div>
             <div class="form-row">
                 <label for="pages">No. Pages</label>
-                <input type="number" name="pages" id="pages" min="0">
+                <input type="number" name="pages" id="pages" min="0" required>
             </div>
-            <div class="form-row">
+            <fieldset class="legacy-form-row">
+                <legend>Status</legend>
+                <div>
+                    <label for='not-read-yet' class='radio-label'>Not Read Yet</label>
+                    <input type="radio" id="not-read-yet" name="read-status" value="not-read-yet"/>
+                </div>
+                <div>
+                    <label for='has-read' class='radio-label'>Has Read</label>
+                    <input type="radio" id="has-read" name="read-status" value="has-read" />
+                </div>
+            </fieldset>
+            <div class="form-row description">
                 <label for="description">Description (Optional)</label>
                 <textarea name="description" id="description"></textarea>
             </div>
+
+            <div class="button-row">
+                <button class="cancel" type="button">Cancel Edit</button>
+                <button class="add" type="button">Add Book</button>
+            </div>
         </form>
-        <button class="save-button">Save Book</button>
     </div>
 
-    <!-- <div class="black-overlay"></div> -->
+    <div class="black-overlay"></div>
     <div class="container">
         <button class="add-book">
             <?xml version="1.0" encoding="UTF-8"?>
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 188 188">
-                    <path d="M168.8,75c2.5,0,5,.5,7.3,1.5,2.3,1,4.3,2.3,6,4,1.7,1.7,3,3.7,4,6s1.5,4.8,1.5,7.3-.5,5.1-1.5,7.4-2.3,4.2-4,5.9-3.7,3-6,4-4.8,1.5-7.3,1.5h-56.2v56.2c0,2.7-.5,5.1-1.5,7.4s-2.3,4.2-4,5.9-3.7,3-6,4-4.8,1.5-7.3,1.5-5.1-.5-7.4-1.5-4.2-2.3-5.9-4-3-3.6-4-5.9c-1-2.3-1.5-4.7-1.5-7.4v-56.2H18.8c-2.7,0-5.1-.5-7.4-1.5-2.3-1-4.2-2.3-5.9-4-1.7-1.7-3-3.6-4-5.9C.5,98.9,0,96.5,0,93.8c0-2.5.5-5,1.5-7.3,1-2.3,2.3-4.3,4-6,1.7-1.7,3.6-3,5.9-4,2.3-1,4.7-1.5,7.4-1.5h56.2V18.8c0-2.5.5-5,1.5-7.3,1-2.3,2.3-4.3,4-6s3.6-3,5.9-4C88.7.5,91.1,0,93.8,0,99,0,103.4,1.8,107.1,5.5s5.5,8.1,5.5,13.3v56.2h56.2,0Z"/>
-                </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 188 188">
+                <path
+                    d="M168.8,75c2.5,0,5,.5,7.3,1.5,2.3,1,4.3,2.3,6,4,1.7,1.7,3,3.7,4,6s1.5,4.8,1.5,7.3-.5,5.1-1.5,7.4-2.3,4.2-4,5.9-3.7,3-6,4-4.8,1.5-7.3,1.5h-56.2v56.2c0,2.7-.5,5.1-1.5,7.4s-2.3,4.2-4,5.9-3.7,3-6,4-4.8,1.5-7.3,1.5-5.1-.5-7.4-1.5-4.2-2.3-5.9-4-3-3.6-4-5.9c-1-2.3-1.5-4.7-1.5-7.4v-56.2H18.8c-2.7,0-5.1-.5-7.4-1.5-2.3-1-4.2-2.3-5.9-4-1.7-1.7-3-3.6-4-5.9C.5,98.9,0,96.5,0,93.8c0-2.5.5-5,1.5-7.3,1-2.3,2.3-4.3,4-6,1.7-1.7,3.6-3,5.9-4,2.3-1,4.7-1.5,7.4-1.5h56.2V18.8c0-2.5.5-5,1.5-7.3,1-2.3,2.3-4.3,4-6s3.6-3,5.9-4C88.7.5,91.1,0,93.8,0,99,0,103.4,1.8,107.1,5.5s5.5,8.1,5.5,13.3v56.2h56.2,0Z" />
+            </svg>
         </button>
     </div>
 </body>

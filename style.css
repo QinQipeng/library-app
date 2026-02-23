@@ -22,6 +22,7 @@ h1, h2, h3, body {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 1;
+    visibility: hidden;
 }
 
 .book {
@@ -63,13 +64,16 @@ h1, h2, h3, body {
     font-family: 'Times New Roman', Times, serif;
 }
 
+.book .cover:hover{
+    filter: brightness(80%);
+}
+
 .book .cover::before{
     position: absolute;
     height: calc(100% - 7.5px);
     content: "";
     border-left: 2px dashed hsl(352, 95%, 52%);
     left: 7.5px;
-    /* box-shadow: 4px 0 3px 4px hsla(0, 45%, 24%, 0.5); */
 }
 
 .book .beneath {
@@ -94,6 +98,33 @@ h1, h2, h3, body {
     width: 10px;
     right: 0;
     border-radius: 5px 0% 0% 5px;
+}
+
+.beneath .bookmark {
+    position: relative;
+    background-color: red;
+    fill: red;
+    border: none;
+    padding: 0;
+    width: 1.5rem;
+    height: 1rem;
+    margin-left: 80%;
+    margin-top: 2%;
+    cursor: pointer;
+}
+
+.bookmark svg{
+    height: auto;
+    width: 100%;
+    padding: 0;
+}
+
+.bookmark:hover{
+    filter: brightness(85%);
+}
+
+.bookmark svg:active{
+    transform: translateY(5px);
 }
 
 .add-book {
@@ -124,74 +155,105 @@ h1, h2, h3, body {
     fill: hsl(13, 59%, 26%);
 }
 
-.form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.close-button {
-    right: 10%;
-    top: 5%;
-    height: 2rem;
-    width: 2rem;
-    border: 1px solid black;
-    border-radius: 100%;
-    align-self: flex-end;
-}
-
 .save-button {
     height: 2.5rem;
     border-radius: 0.5rem;
 }
 
 .form-container {
-    --scale: 2;
-    width: calc(292px*var(--scale));
-    height: calc(360px*var(--scale));
+    width: clamp(400px,30vw,500px);;
+    height: max(75vh,500px);
     position: fixed;
     justify-self: center;
     top: 50%;
     transform: translateY(-50%);
     box-sizing: border-box;
-
-    background: no-repeat url(book-template.png);
-    background-size: contain;
     z-index: 2;
 
-    padding: 50px 75px 75px;
+    padding: 3rem 5rem 5rem;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+
+    background: no-repeat url(book-template.png);
+    background-size: 100% 100%;
+    visibility: hidden;
 }
 
-.form-container form,
-.form-row{
-    height: 100%;
+.edit-button,
+.close-button {
+    height: 2rem;
+    width:  2rem;
+    border: 1px solid black;
+    padding: 0;
+    border-radius: 100%;
+    flex-shrink: 0;
+    align-self: flex-end;
+    z-index: inherit;
+}
+
+.button-row {
+    margin-left: auto;
     display: flex;
-    flex-direction: column;
+    gap: 0.5rem;
     flex: 1;
 }
 
-.form-row {
-    justify-content: flex-start;
+.edit-button {
+    visibility: hidden;
 }
 
-.form-row:last-child {
-    flex: 3;
+.book-form{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    gap: 3%
 }
 
-.form-row > input,
-.form-row > textarea {
-    height: inherit;
+.save,
+.cancel{
+    flex: 1;
     border-radius: 0.5rem;
     border: 1px solid black;
 }
 
-.form-row > input{
-    max-height: 1.5rem;
+.cancel {
+    visibility: hidden;
+    position: absolute;
 }
 
-.form-row > textarea{
+.form-row{
+    display: flex;
+
+    flex-direction: column;
+    width: auto;
+}
+
+.form-row > input,
+.form-row > textarea {
+    height: 100%;
+    width: auto;
+    border-radius: 0.5rem;
+    border: 1px solid black;
     resize: none;
+    outline: none;
 }
 
+.form-row.description {
+    flex: 4;
+}
+
+.book-form > .button-row {
+    margin: 0;
+}
+
+.legacy-form-row {
+    display: flex;
+    padding: 0;
+    border: 0;
+    gap: 10%;
+    justify-content: center;
+    visibility: hidden;
+    position: absolute;
+}
