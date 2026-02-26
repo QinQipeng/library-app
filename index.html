@@ -15,53 +15,54 @@
 <body>
     <div class="form-container">
         <div class="button-row">
-            <button class="edit-button">🖋️</button>
-            <button class="close-button">❌</button>
+            <button class="round-button delete-button"></button>
+            <button class="round-button edit-button"></button>
+            <button class="round-button close-button"></button>
         </div>
 
-        <form action="" class="book-form">
+        <form action="" method="get" class="book-form">
             <div class="form-row">
                 <label for="title">Title</label>
-                <input type="text" name="title" id="title" required>
+                <input type="text" name="Title" id="title" required />
             </div>
             <div class="form-row">
                 <label for="author">Author</label>
-                <input type="text" name="author" id="author" required>
+                <input type="text" name="Author" id="author" required />
             </div>
             <div class="form-row">
                 <label for="year">Year</label>
-                <input type="number" name="year" id="year" min="0" max="2026" required>
+                <input type="number" name="Year" id="year" min="0" max="2026" required />
             </div>
             <div class="form-row">
                 <label for="pages">No. Pages</label>
-                <input type="number" name="pages" id="pages" min="0" required>
+                <input type="number" name="Pages" id="pages" min="0" required />
             </div>
             <fieldset class="legacy-form-row">
                 <legend>Status</legend>
                 <div>
                     <label for='not-read-yet' class='radio-label'>Not Read Yet</label>
-                    <input type="radio" id="not-read-yet" name="read-status" value="not-read-yet"/>
+                    <input type="radio" id="not-read-yet" name="read-status" value="false"/>
                 </div>
                 <div>
                     <label for='has-read' class='radio-label'>Has Read</label>
-                    <input type="radio" id="has-read" name="read-status" value="has-read" />
+                    <input type="radio" id="has-read" name="read-status" value="true"/>
                 </div>
             </fieldset>
             <div class="form-row description">
                 <label for="description">Description (Optional)</label>
                 <textarea name="description" id="description"></textarea>
             </div>
-
+            
             <div class="button-row">
-                <button class="cancel" type="button">Cancel Edit</button>
-                <button class="add" type="button">Add Book</button>
+                <button class="cancel-button" type="button">Cancel Edit</button>
+                <button class="add-button" type="submit">Add Book</button>
             </div>
         </form>
     </div>
 
     <div class="black-overlay"></div>
     <div class="container">
-        <button class="add-book">
+        <button class="add-book round-button">
             <?xml version="1.0" encoding="UTF-8"?>
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 188 188">
                 <path
