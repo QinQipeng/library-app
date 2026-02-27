@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <script src="script.js" defer></script>
     <title>library</title>
 </head>
@@ -22,34 +22,34 @@
 
         <form action="" method="get" class="book-form">
             <div class="form-row">
-                <label for="title">Title</label>
+                <label for="title">Title:</label>
                 <input type="text" name="Title" id="title" required />
             </div>
             <div class="form-row">
-                <label for="author">Author</label>
+                <label for="author">Author:</label>
                 <input type="text" name="Author" id="author" required />
             </div>
             <div class="form-row">
-                <label for="year">Year</label>
+                <label for="year">Year:</label>
                 <input type="number" name="Year" id="year" min="0" max="2026" required />
             </div>
             <div class="form-row">
-                <label for="pages">No. Pages</label>
+                <label for="pages">No. Pages:</label>
                 <input type="number" name="Pages" id="pages" min="0" required />
             </div>
             <fieldset class="legacy-form-row">
-                <legend>Status</legend>
+                <legend>Read Status:</legend>
                 <div>
                     <label for='not-read-yet' class='radio-label'>Not Read Yet</label>
-                    <input type="radio" id="not-read-yet" name="read-status" value="false"/>
+                    <input type="radio" id="not-read-yet" name="read-status" checked/>
                 </div>
                 <div>
                     <label for='has-read' class='radio-label'>Has Read</label>
-                    <input type="radio" id="has-read" name="read-status" value="true"/>
+                    <input type="radio" id="has-read" name="read-status"/>
                 </div>
             </fieldset>
             <div class="form-row description">
-                <label for="description">Description (Optional)</label>
+                <label for="description">Description (Optional):</label>
                 <textarea name="description" id="description"></textarea>
             </div>
             

@@ -1,6 +1,7 @@
 const MYLIBRARY = [];
 const CONTAINER = document.querySelector(".container");
 const FORMCONTAINER = document.querySelector(".form-container");
+const BOOKFORM = FORMCONTAINER.querySelector(".book-form");
 
 let bookNum = 0;
 const formRows = FORMCONTAINER.querySelectorAll(".form-row");
@@ -103,13 +104,6 @@ function _updateBookForm(info = null) {
     })
 }
 
-// function _updateBook(bookID){
-//     const book2bUpdated = document.getElementById(bookID);
-//     book2bUpdated.querySelector("h1").textContent = new_info.title;
-//     book2bUpdated.querySelector("h2").textContent = new_info.author;
-//     book2bUpdated.querySelector("h3").textContent = new_info.year;
-// }
-
 function displayAllBook(container) {
     bookView[".form-container"] = FORMCONTAINER;
     bookView[".edit-button"] = formButtons[".edit-button"];
@@ -124,9 +118,20 @@ function displayAllBook(container) {
             e.stopPropagation();
             book_info.hasRead = !book_info.hasRead;
             new_book["bookmark"].setAttribute("style", book_info.hasRead ? 
-                ("background-color: green; fill: green;"):
+                ("background-color: yellowgreen; fill: yellowgreen;"):
                 ("background-color: red; fill: red;"));
-            new_book["bookmark"].setAttribute('title', book_info.hasRead ? "has read" : "not read yet");
+
+            const read_status = book_info.hasRead ? "has-read" : "not-read-yet";
+            new_book["bookmark"].setAttribute('title', read_status);
+
+            bookView['.legacy-form-row'].querySelectorAll("input[type='radio']").forEach(radio => {
+                const radioID = radio.getAttribute("id");
+                if(radioID == read_status) {
+                    radio.checked = true;
+                }else{
+                    radio.checked = false;
+                }
+            })
         })
 
         new_book["book"].addEventListener("click", () => {
@@ -136,16 +141,52 @@ function displayAllBook(container) {
             _updateBookForm(book_info);
 
             const read_status = book_info.hasRead ? "has-read" : "not-read-yet";
-            bookView['.legacy-form-row'].querySelector(`input[id='${read_status}']`).setAttribute("checked",true);
+            bookView['.legacy-form-row'].querySelectorAll("input[type='radio']").forEach(radio => {
+                const radioID = radio.getAttribute("id");
+                if(radioID == read_status) {
+                    radio.checked = true;
+                }else{
+                    radio.checked = false;
+                }
+            })
         })
 
         container.appendChild(new_book["book"]);
         bookNum++;
     }
 
+    //  setting up functionalities for the buttons in the form that displays book info
+    Array.from(document.getElementsByName("read-status")).forEach(radioButton => {
+        radioButton.addEventListener("input",(e) => {
+            const readStatus = e.target.id;
+            // console.log(`readStatus: ${readStatus}`)
+            const currentBookID = FORMCONTAINER.getAttribute("current_book")
+            const book2bUpdated = MYLIBRARY.find(book => book.id == currentBookID);
+            book2bUpdated.hasRead = readStatus == "has-read" ? true : false;
+            // console.log(book2bUpdated);
+        })
+    })
+
+    
     formButtons[".close-button"].addEventListener("click",(e)=>{
         e.stopPropagation();
         _visualizeClasses(bookView,false);
+        // Updates the color of the booknote
+        const hasRead = Array.from(FORMCONTAINER.querySelectorAll("input[type='radio']"))
+                             .find(radio => radio.checked).id;
+        // console.log(`${typeof(hasRead)}: ${hasRead}`);
+        // console.log(hasRead)
+        
+        if(FORMCONTAINER.getAttribute("current_book")){
+            const bookDOMElement = document.getElementById(FORMCONTAINER.getAttribute("current_book"));
+            const bookMark = bookDOMElement.querySelector(".bookmark");
+            bookMark.setAttribute("style", hasRead == "has-read" ? 
+                    ("background-color: yellowgreen; fill: yellowgreen;"):
+                    ("background-color: red; fill: red;"));
+
+            bookMark.setAttribute('title', hasRead == "has-read" ? "has read" : "not read yet");
+        }
+
         FORMCONTAINER.removeAttribute("current_book");
         FORMCONTAINER.style.visibility = "hidden";
         formButtonRow.setAttribute("style", "visibility:hidden; position:absolute");
@@ -154,7 +195,7 @@ function displayAllBook(container) {
     })
 
     formButtons[".cancel-button"].addEventListener("click",()=>{
-        const currentBookID = FORMCONTAINER.getAttribute("current_book")
+        const currentBookID = FORMCONTAINER.getAttribute("current_book");
         const originalInfo = MYLIBRARY.find(book => book.id == currentBookID);
 
         formRows.forEach(row => {
@@ -188,30 +229,31 @@ function displayAllBook(container) {
         const deletedBook = MYLIBRARY.find(element => element.id == FORMCONTAINER.getAttribute("current_book"));
         MYLIBRARY.splice(MYLIBRARY.indexOf(deletedBook),1);
         CONTAINER.removeChild(document.getElementById(FORMCONTAINER.getAttribute("current_book")));
+        FORMCONTAINER.removeAttribute("current_book");
         formButtons[".close-button"].click();
     })
 
     formButtons[".add-button"].addEventListener("click",(e)=>{
-        // e.stopPropagation();
-        e.preventDefault();
-        const currentBookID = FORMCONTAINER.getAttribute("current_book")
+        const currentBookID = FORMCONTAINER.getAttribute("current_book");
         if(currentBookID) {
-            console.log(`Save new info for the book ${currentBookID}`);
+            // console.log(`Save new info for the book ${currentBookID}`);
             const updatableInfo = ['title','author','year','pages','description'];
             const coverInfo = ["h1","h2","h3"];
             const bookDOMElement = document.getElementById(currentBookID);
+
+            // Updates the data of the book in the array
             const book2bUpdated = MYLIBRARY.find(book => book.id == currentBookID);
             updatableInfo.forEach(info => {
                 book2bUpdated[info] = FORMCONTAINER.querySelector(`#${info}`).value;
             })
-            console.log(book2bUpdated);
-
+            // console.log(book2bUpdated);
+            // Updates the display of the book
             for(let i = 0; i < coverInfo.length; i++){
                 bookDOMElement.querySelector(coverInfo[i]).textContent 
                 = FORMCONTAINER.querySelector(`#${updatableInfo[i]}`).value;
             }
         }
-        formButtons[".close-button"].click();
+        // formButtons[".close-button"].click();
     })
 }
 
@@ -226,16 +268,15 @@ displayAllBook(CONTAINER);
 
 const addBookButton = document.querySelector(".add-book");
 addBookButton.addEventListener('click', () => {
+    _updateBookForm();
     formButtonRow.setAttribute("style", "visibility:visible; position:relative");
 
     bookView[".black-overlay"].style.visibility = "visible";
     FORMCONTAINER.style.visibility = "visible";
-
+    
     formButtons[".add-button"].classList = ["add-button"];
     formButtons[".add-button"].textContent = "Add Book";
     formButtons[".add-button"].addEventListener('click', (e)=> {
-        e.preventDefault();
-        e.stopPropagation();
         const newBook_info = {
             'title':        null,
             'author':       null,
@@ -245,13 +286,13 @@ addBookButton.addEventListener('click', () => {
         };
 
         Object.keys(newBook_info).forEach(key => {
-            newBook_info[key]=FORMCONTAINER.querySelector(`#${key}`).value;
+            newBook_info[key]=BOOKFORM.querySelector(`#${key}`).value;
         })
-        console.log(newBook_info);
+        // console.log(newBook_info);
 
         for(const [key, value] of Object.entries(newBook_info)){
             if (value == '' && key != 'description') {
-                console.log(`required info for "${key}" is missing!`);
+                // console.log(`required info for "${key}" is missing!`);
                 return;
             }
         }
@@ -267,4 +308,9 @@ addBookButton.addEventListener('click', () => {
         displayAllBook(CONTAINER);
         formButtons[".close-button"].click();
     })    
+})
+
+BOOKFORM.addEventListener("submit",(e) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
 })
