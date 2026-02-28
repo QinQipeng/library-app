@@ -22,7 +22,7 @@ Object.keys(formButtons).forEach(key => formButtons[key] = FORMCONTAINER.querySe
 Object.keys(bookView).forEach(key =>    bookView[key] = document.querySelector(key))
 
 
-function Book(title, author, year, pages) {
+function Book(title, author, year, pages, description) {
     if (!new.target) {
         throw Error("You must use the 'new' operator to call the constructor");
     }
@@ -33,7 +33,7 @@ function Book(title, author, year, pages) {
     this.year = year;
     this.pages = pages;
     this.hasRead = false;
-    this.description = '';
+    this.description = description ?? "";
 
     this.info = function() {
         return `BookID ${this.id}: ${this.title} by ${this.author} in ${this.year}, `+
@@ -41,8 +41,8 @@ function Book(title, author, year, pages) {
     }
 }
 
-function addBookToLibrary(title, author, year, pages) {
-    const new_book = new Book(title, author, year, pages);
+function addBookToLibrary(title, author, year, pages, description) {
+    const new_book = new Book(title, author, year, pages, description);
     MYLIBRARY.push(new_book);
 }
 
@@ -82,7 +82,7 @@ function createNewBook (book_info) {
     return new_book;  
 }
 
-const _visualizeClasses = function(classes, option) {
+function _visualizeClasses(classes, option) {
     Object.keys(classes).forEach(key => {
         classes[key].style.visibility = option ? "visible" : "hidden"
         if (key == ".legacy-form-row") {
@@ -102,6 +102,18 @@ function _updateBookForm(info = null) {
             row_input.readOnly = true;
         }
     })
+}
+
+function _validateForm(new_info) {
+    for(const [key, value] of Object.entries(new_info)){
+        if (value == '' && key != 'description') {
+            return false;
+        }
+        if (key == 'year' && Number(BOOKFORM.querySelector(`#year`).getAttribute("max")) < Number(value)){
+            return false;
+        }
+    }
+    return true;
 }
 
 function displayAllBook(container) {
@@ -237,23 +249,35 @@ function displayAllBook(container) {
         const currentBookID = FORMCONTAINER.getAttribute("current_book");
         if(currentBookID) {
             // console.log(`Save new info for the book ${currentBookID}`);
-            const updatableInfo = ['title','author','year','pages','description'];
+            const newInfo = {
+                'title':        null,
+                'author':       null,
+                'year':         null,
+                'pages':        null,
+                'description':  null
+            };
             const coverInfo = ["h1","h2","h3"];
             const bookDOMElement = document.getElementById(currentBookID);
 
+            Object.keys(newInfo).forEach(info => {
+                newInfo[info]=BOOKFORM.querySelector(`#${info}`).value;
+            })
+
+            if(!_validateForm(newInfo)) return;
+
             // Updates the data of the book in the array
             const book2bUpdated = MYLIBRARY.find(book => book.id == currentBookID);
-            updatableInfo.forEach(info => {
+            Object.keys(newInfo).forEach(info => {
                 book2bUpdated[info] = FORMCONTAINER.querySelector(`#${info}`).value;
             })
             // console.log(book2bUpdated);
             // Updates the display of the book
-            for(let i = 0; i < coverInfo.length; i++){
+            for(let i = 0, infoList = Object.keys(newInfo); i < coverInfo.length; i++){
                 bookDOMElement.querySelector(coverInfo[i]).textContent 
-                = FORMCONTAINER.querySelector(`#${updatableInfo[i]}`).value;
+                = newInfo[infoList[i]];
             }
         }
-        // formButtons[".close-button"].click();
+        formButtons[".close-button"].click();
     })
 }
 
@@ -276,27 +300,24 @@ addBookButton.addEventListener('click', () => {
     
     formButtons[".add-button"].classList = ["add-button"];
     formButtons[".add-button"].textContent = "Add Book";
-    formButtons[".add-button"].addEventListener('click', (e)=> {
-        const newBook_info = {
-            'title':        null,
-            'author':       null,
-            'year':         null,
-            'pages':        null,
-            'description':  null
-        };
+  
+})
 
-        Object.keys(newBook_info).forEach(key => {
-            newBook_info[key]=BOOKFORM.querySelector(`#${key}`).value;
-        })
-        // console.log(newBook_info);
+formButtons[".add-button"].addEventListener('click', (e)=> {
+    const newBook_info = {
+        'title':        null,
+        'author':       null,
+        'year':         null,
+        'pages':        null,
+        'description':  null
+    };
 
-        for(const [key, value] of Object.entries(newBook_info)){
-            if (value == '' && key != 'description') {
-                // console.log(`required info for "${key}" is missing!`);
-                return;
-            }
-        }
+    Object.keys(newBook_info).forEach(key => {
+        newBook_info[key]=BOOKFORM.querySelector(`#${key}`).value;
+    })
+    // console.log(newBook_info);
 
+    if(_validateForm(newBook_info) && formButtons[".add-button"].classList.value == "add-button") {   // Ensure no new book is created in when saving book info for an existing book
         addBookToLibrary(
             newBook_info['title'],
             newBook_info['author'],
@@ -304,10 +325,9 @@ addBookButton.addEventListener('click', () => {
             newBook_info['pages'],
             newBook_info['description']
         );
-
         displayAllBook(CONTAINER);
         formButtons[".close-button"].click();
-    })    
+    };
 })
 
 BOOKFORM.addEventListener("submit",(e) => {
