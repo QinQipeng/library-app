@@ -22,23 +22,24 @@ Object.keys(formButtons).forEach(key => formButtons[key] = FORMCONTAINER.querySe
 Object.keys(bookView).forEach(key =>    bookView[key] = document.querySelector(key))
 
 
-function Book(title, author, year, pages, description) {
-    if (!new.target) {
-        throw Error("You must use the 'new' operator to call the constructor");
+class Book {
+    #id = "";
+    constructor(title, author, year, pages, description){
+        this.#id = crypto.randomUUID();
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.pages = pages;
+        this.hasRead = false;
+        this.description = description ?? "";
     }
 
-    this.id = crypto.randomUUID();
-    this.title = title;
-    this.author = author;
-    this.year = year;
-    this.pages = pages;
-    this.hasRead = false;
-    this.description = description ?? "";
-
-    this.info = function() {
+    get info() {
         return `BookID ${this.id}: ${this.title} by ${this.author} in ${this.year}, `+
-        `${this.pages} pages, ${this.hasRead ? "has read" : "not read yet"}`
+        `${this.pages} pages, ${this.hasRead ? "has read" : "not read yet"}` 
     }
+
+    get id() {return this.#id};
 }
 
 function addBookToLibrary(title, author, year, pages, description) {
